@@ -70,23 +70,7 @@ async def time(event):
     SENDER = sender.id
     text = btc_script.btc_fees()
     await client.send_message(SENDER, text, parse_mode="HTML")
-
-
-### GPT command, ask something and get an answer
-@client.on(events.NewMessage(pattern='/(?i)gpt')) 
-async def time(event):
-    # Get the sender of the message
-    sender = await event.get_sender()
-    SENDER = sender.id
     
-    msg = event.message.text # /gpt come ti chiami
-    after_command = msg.split(" ")[1:] # ['/gpt', 'come', 'ti', 'chiami']
-    question = ' '.join(after_command) # we get 'come ti chiami' 
-    
-    text = chat_gpt.ask(question)
-    
-    await client.send_message(SENDER, text, parse_mode="HTML")
-
 
 ### MAIN
 if __name__ == '__main__':
