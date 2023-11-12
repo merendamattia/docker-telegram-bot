@@ -28,6 +28,7 @@ async def start(event):
     text = "Benvenuto nel bot dei calabresi!"
     await client.send_message(SENDER, text, parse_mode="HTML")
 
+
 # Define the /stop command
 @client.on(events.NewMessage(pattern='/(?i)stop')) 
 async def stop(event):
@@ -38,6 +39,16 @@ async def stop(event):
 
     # Stop the bot execution
     await client.disconnect()
+
+
+### Test command
+@client.on(events.NewMessage(pattern='/(?i)hi')) 
+async def time(event):
+    # Get the sender of the message
+    sender = await event.get_sender()
+    SENDER = sender.id
+    text = "Hi! "
+    await client.send_message(SENDER, text, parse_mode="HTML")
 
 
 ### Test command, get the current time and day
