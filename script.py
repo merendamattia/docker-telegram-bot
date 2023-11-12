@@ -4,7 +4,6 @@ from telethon.tl.custom import Button
 
 # Scripts utility
 from scripts import btc_script
-from scripts import chat_gpt
 
 import configparser # Library for reading from a configuration file, # pip install configparser
 import datetime # Library that we will need to get the day and time, # pip install datetime
@@ -70,7 +69,7 @@ async def time(event):
     SENDER = sender.id
     text = btc_script.btc_fees()
     await client.send_message(SENDER, text, parse_mode="HTML")
-    
+
 
 ### MAIN
 if __name__ == '__main__':

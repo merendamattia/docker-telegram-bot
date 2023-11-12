@@ -3,6 +3,4 @@ pyasn1==0.4.8
 rsa==4.9
 Telethon==1.26.1
 wincertstore==0.2
-
-# btc_script.py requirements
 requests==2.31.0
