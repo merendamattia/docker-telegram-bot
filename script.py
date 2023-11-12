@@ -2,6 +2,9 @@
 from telethon import TelegramClient, events
 from telethon.tl.custom import Button
 
+# Scripts utility
+from scripts import btc_script
+
 import configparser # Library for reading from a configuration file, # pip install configparser
 import datetime # Library that we will need to get the day and time, # pip install datetime
 
@@ -22,12 +25,11 @@ client = TelegramClient('sessions/session_master', api_id, api_hash).start(bot_t
 async def start(event):
     sender = await event.get_sender()
     SENDER = sender.id
-    text = "Docker Bot 🤖 ready\nHello! I'm answering you from Docker!"
+    text = "Benvenuto nel bot dei calabresi!"
     await client.send_message(SENDER, text, parse_mode="HTML")
 
 
-
-### First command, get the time and day
+### Test command, get the current time and day
 @client.on(events.NewMessage(pattern='/(?i)time')) 
 async def time(event):
     # Get the sender of the message
@@ -36,6 +38,15 @@ async def time(event):
     text = "Received! Day and time: " + str(datetime.datetime.now())
     await client.send_message(SENDER, text, parse_mode="HTML")
 
+
+### BTC fees command, get current fees on Bitcoin Blockchain
+@client.on(events.NewMessage(pattern='/(?i)btc-fees')) 
+async def time(event):
+    # Get the sender of the message
+    sender = await event.get_sender()
+    SENDER = sender.id
+    text = btc_script.btc_fees()
+    await client.send_message(SENDER, text, parse_mode="HTML")
 
 
 ### MAIN
