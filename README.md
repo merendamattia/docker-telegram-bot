@@ -10,14 +10,29 @@ In this project, you will find the necessary code and instructions to build and 
 ## Running the Project
 1. To get started, make sure you have Docker installed on your machine: https://docs.docker.com/get-docker/
 2. Clone this repository to you computer
-3. Change the config.ini file with you values: 
+3. Create a file named `config.ini` and copy/paste these lines:
+```
+[default]
+; Don't touch [default], DO NOT MODIFY IT
+; APP_ID and API_HASH for telethon: https://my.telegram.org/auth
+; BOT_TOKEN: Write on telegram to @BotFather and follow the instruction
 
-    -> APP_ID and API_HASH for telethon: https://my.telegram.org/auth
+BOT_TOKEN = ADD_YOURS
+api_id = ADD_YOURS
+api_hash = ADD_YOURS
+```
+4. Change the config.ini file with you values: 
+    - APP_ID and API_HASH for telethon: https://my.telegram.org/auth
+    - BOT_TOKEN: Write on telegram to @BotFather and follow the instructions
     
-    -> BOT_TOKEN: Write on telegram to @BotFather and follow the instructions
-    
-4. Then, navigate to the project folder and run the following command to build the Docker image:
-`docker build --tag dockerbot .`
-5. To run the Docker container, use the following command:
-`docker-compose up -d`
+5. Then, navigate to the project folder and run the following command to build the Docker image:
+```
+docker build --tag dockerbot .
+```
+
+6. To run the Docker container, use the following command:
+```
+docker-compose up -d
+```
+
 6. Once the container is running, go to Telegram and send the /start command to your bot. You can now enjoy using your Python script within the Docker container!
