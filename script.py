@@ -4,6 +4,7 @@ from telethon.tl.custom import Button
 
 # Scripts utility
 from scripts import btc_script
+from scripts import chat_gpt
 
 import configparser # Library for reading from a configuration file, # pip install configparser
 import datetime # Library that we will need to get the day and time, # pip install datetime
@@ -68,6 +69,22 @@ async def time(event):
     sender = await event.get_sender()
     SENDER = sender.id
     text = btc_script.btc_fees()
+    await client.send_message(SENDER, text, parse_mode="HTML")
+
+
+### GPT command, ask something and get an answer
+@client.on(events.NewMessage(pattern='/(?i)gpt')) 
+async def time(event):
+    # Get the sender of the message
+    sender = await event.get_sender()
+    SENDER = sender.id
+    
+    msg = event.message.text # /gpt come ti chiami
+    after_command = msg.split(" ")[1:] # ['/gpt', 'come', 'ti', 'chiami']
+    question = ' '.join(after_command) # we get 'come ti chiami' 
+    
+    text = chat_gpt.ask(question)
+    
     await client.send_message(SENDER, text, parse_mode="HTML")
 
 
