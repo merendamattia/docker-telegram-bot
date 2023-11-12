@@ -40,7 +40,7 @@ async def time(event):
 
 
 ### BTC fees command, get current fees on Bitcoin Blockchain
-@client.on(events.NewMessage(pattern='/(?i)btc-fees')) 
+@client.on(events.NewMessage(pattern='/(?i)btcfees')) 
 async def time(event):
     # Get the sender of the message
     sender = await event.get_sender()
