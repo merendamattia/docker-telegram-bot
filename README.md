@@ -19,5 +19,5 @@ In this project, you will find the necessary code and instructions to build and 
 4. Then, navigate to the project folder and run the following command to build the Docker image:
 `docker build --tag dockerbot .`
 5. To run the Docker container, use the following command:
-`docker-compose up`
+`docker-compose up -d`
 6. Once the container is running, go to Telegram and send the /start command to your bot. You can now enjoy using your Python script within the Docker container!
