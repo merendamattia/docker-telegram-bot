@@ -20,12 +20,14 @@ BOT_TOKEN = config.get('default','BOT_TOKEN') # get the bot token
 # Create the client and the session called session_master. We start the session as the Bot (using bot_token)
 client = TelegramClient('sessions/session_master', api_id, api_hash).start(bot_token=BOT_TOKEN)
 
+
 # Define the /start command
-@client.on(events.NewMessage(pattern='/(?i)start')) 
+@client.on(events.NewMessage(pattern='/(?i)start'))
 async def start(event):
     sender = await event.get_sender()
     SENDER = sender.id
-    text = "Benvenuto nel bot dei calabresi!"
+    USERNAME = sender.username
+    text = "Benvenuto nel bot dei calabresi, " + str(USERNAME) + "!"
     await client.send_message(SENDER, text, parse_mode="HTML")
 
 
@@ -47,7 +49,8 @@ async def time(event):
     # Get the sender of the message
     sender = await event.get_sender()
     SENDER = sender.id
-    text = "Hi " + SENDER + "!"
+    USERNAME = sender.username
+    text = "Hi " + str(USERNAME) + "!"
     await client.send_message(SENDER, text, parse_mode="HTML")
 
 
