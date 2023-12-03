@@ -30,6 +30,8 @@ async def tracking_function_btcfees(value, event):
 
 async def tracking_thread_btcfees(value, event_occurred, event):
     c = 0
+    await event.respond("tracking_thread_btcfees in")
+    await event.respond(event_occurred.is_set())
     while not event_occurred.is_set():
         await event.respond("GET Request n=" + str(c))
         c += 1
