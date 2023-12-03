@@ -65,7 +65,17 @@ async def time(event):
 
 
 ### BTC fees command, get current fees on Bitcoin Blockchain
-@client.on(events.NewMessage(pattern='/(?i)btcfees (.+)')) 
+@client.on(events.NewMessage(pattern='/(?i)btcfees')) 
+async def time(event):
+    # Get the sender of the message
+    sender = await event.get_sender()
+    SENDER = sender.id
+    text = btc_script.btc_fees()
+    await client.send_message(SENDER, text, parse_mode="HTML")
+
+
+### BTC tracking fees command, get a notify when the current fee is under a target on Bitcoin Blockchain
+@client.on(events.NewMessage(pattern='/(?i)trackbtcfees (.+)')) 
 async def time(event):
     # Get the sender of the message
     sender = await event.get_sender()
@@ -77,19 +87,15 @@ async def time(event):
     if user_message.isdigit():
         # Se è un numero, fai qualcosa
         response_text = f"You entered a number: {user_message}"
-    elif user_message:
-        # Se non è un numero, ma c'è un messaggio
-        response_text = f"You said: {user_message}"
+        await event.respond(response_text)
+        
+        btc_script.tracking_function_btcfees(user_message, event)
+
+        response_text = f"Tracking started"
+        await event.respond(response_text)
     else:
         # Se non c'è nessun messaggio
         response_text = "You didn't provide any message."
-        text = btc_script.btc_fees()
-        await client.send_message(SENDER, text, parse_mode="HTML")
-    
-
-    # Rispondi con il testo appropriato
-    await event.respond(response_text)
-
 
 ### MAIN
 if __name__ == '__main__':

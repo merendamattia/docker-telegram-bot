@@ -1,4 +1,6 @@
 import requests
+import threading
+import time
 
 # Comando per ottenere le fee di BTC
 def btc_fees():
@@ -11,6 +13,45 @@ def btc_fees():
     reply += "Minimum: " + get_fees("MINIMUM", data) + "\n"
 
     return reply
+
+async def tracking_function_btcfees(value, event):
+    # Variabile di controllo per indicare se l'evento si è verificato
+    event_occurred = False
+
+    # Crea un thread che eseguirà la funzione di ascolto
+    thread = threading.Thread(target=tracking_thread_btcfees, args=(value, event_occurred, event))
+    # Imposta il thread in modalità daemon per terminarlo quando il programma principale termina
+    thread.daemon = True
+    # Avvia il thread
+    thread.start()
+    await event.respond("Thread started")
+
+async def tracking_thread_btcfees(value, event_occurred, event):
+    c = 0
+    while not event_occurred:
+        await event.respond("GET Request n=" + c)
+        c = c + 1
+
+        # Esegui la tua azione di tracking, ad esempio, effettua una richiesta GET
+        data = get_data("https://mempool.space/api/v1/fees/recommended")
+        minimum = get_fees("MINIMUM", data)
+
+        await event.respond("GET Request done")
+        await event.respond(data)
+        await event.respond(minimum)
+        
+        # Verifica l'evento o la risposta
+        if value <= minimum:
+            await event.respond("TARGET RAGGIUNTO!!! " + value)
+            # Imposta la variabile di controllo per far terminare il thread
+            event_occurred = True
+
+        seconds = 10
+        await event.respond("sleep " + seconds + " seconds")
+        # Attendi 30 secondi prima di eseguire nuovamente la richiesta
+        time.sleep(seconds)
+    
+    await event.respond("Thread dead")
 
 # ---------------------------------------- FUNZIONI VARIE
 # Effettua una richiesta GET a un URL e ottiene i dati JSON

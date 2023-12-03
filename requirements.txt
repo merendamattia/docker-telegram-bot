@@ -4,3 +4,5 @@ rsa==4.9
 Telethon==1.26.1
 wincertstore==0.2
 requests==2.31.0
+threading
+time
