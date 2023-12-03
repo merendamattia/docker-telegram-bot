@@ -65,13 +65,30 @@ async def time(event):
 
 
 ### BTC fees command, get current fees on Bitcoin Blockchain
-@client.on(events.NewMessage(pattern='/(?i)btcfees')) 
+@client.on(events.NewMessage(pattern='/(?i)btcfees (.+)')) 
 async def time(event):
     # Get the sender of the message
     sender = await event.get_sender()
     SENDER = sender.id
-    text = btc_script.btc_fees()
-    await client.send_message(SENDER, text, parse_mode="HTML")
+    
+    user_message = event.pattern_match.group(1)  # Estrai il messaggio dall'input
+
+    # Controllo se user_message è un numero
+    if user_message.isdigit():
+        # Se è un numero, fai qualcosa
+        response_text = f"You entered a number: {user_message}"
+    elif user_message:
+        # Se non è un numero, ma c'è un messaggio
+        response_text = f"You said: {user_message}"
+    else:
+        # Se non c'è nessun messaggio
+        response_text = "You didn't provide any message."
+        text = btc_script.btc_fees()
+        await client.send_message(SENDER, text, parse_mode="HTML")
+    
+
+    # Rispondi con il testo appropriato
+    await event.respond(response_text)
 
 
 ### MAIN
