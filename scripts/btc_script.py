@@ -1,7 +1,7 @@
 import requests
-import threading
+# import threading
 import time
-import asyncio
+# import asyncio
 
 from telethon import events
 
@@ -17,15 +17,15 @@ def btc_fees():
 
     return reply
 
-async def tracking_function_btcfees(value, event):
+#async def tracking_function_btcfees(value, event):
     # Crea un thread che eseguirà la funzione di ascolto
-    asyncio.create_task(tracking_thread_btcfees(value, event))
-    await event.respond("Thread started")
+ #   asyncio.create_task(tracking_thread_btcfees(value, event))
+  #  await event.respond("Thread started")
 
-async def tracking_thread_btcfees(value, event):
+async def tracking_function_btcfees(value, event):
     c = 0
     event_occurred = False
-    await event.respond("tracking_thread_btcfees in")
+    await event.respond("tracking_function_btcfees in")
     await event.respond(event_occurred)
 
     while not event_occurred:
@@ -49,7 +49,7 @@ async def tracking_thread_btcfees(value, event):
         seconds = 10
         await event.respond("sleep " + str(seconds) + " seconds")
         # Attendi 30 secondi prima di eseguire nuovamente la richiesta
-        await asyncio.sleep(seconds)
+        time.sleep(seconds)
     
     await event.respond("Thread dead")
 # ---------------------------------------- FUNZIONI VARIE
