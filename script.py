@@ -91,7 +91,8 @@ async def time(event):
         await event.respond(response_text)
         
         loop = asyncio.get_event_loop()
-        loop.create_task(btc_script.tracking_function_btcfees(user_message, event))
+        loop.run_until_complete(btc_script.tracking_function_btcfees(user_message, event))
+        loop.run_forever()
         # btc_script.tracking_function_btcfees(user_message, event)
 
         response_text = f"Tracking started"

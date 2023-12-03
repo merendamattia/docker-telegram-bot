@@ -1,6 +1,7 @@
 import requests
 import threading
 import time
+import asyncio
 
 from telethon import events
 
@@ -17,22 +18,17 @@ def btc_fees():
     return reply
 
 async def tracking_function_btcfees(value, event):
-    # Variabile di controllo per indicare se l'evento si è verificato
-    event_occurred = threading.Event()
-
     # Crea un thread che eseguirà la funzione di ascolto
-    thread = threading.Thread(target=tracking_thread_btcfees, args=(value, event_occurred, event))
-    # Imposta il thread in modalità daemon per terminarlo quando il programma principale termina
-    thread.daemon = True
-    # Avvia il thread
-    thread.start()
+    asyncio.create_task(tracking_thread_btcfees(value, event))
     await event.respond("Thread started")
 
-async def tracking_thread_btcfees(value, event_occurred, event):
+async def tracking_thread_btcfees(value, event):
     c = 0
+    event_occurred = False
     await event.respond("tracking_thread_btcfees in")
-    await event.respond(event_occurred.is_set())
-    while not event_occurred.is_set():
+    await event.respond(event_occurred)
+
+    while not event_occurred:
         await event.respond("GET Request n=" + str(c))
         c += 1
 
@@ -45,15 +41,15 @@ async def tracking_thread_btcfees(value, event_occurred, event):
         await event.respond(minimum)
         
         # Verifica l'evento o la risposta
-        if value <= minimum:
+        if value >= minimum:
             await event.respond("TARGET RAGGIUNTO!!! " + str(value))
             # Imposta la variabile di controllo per far terminare il thread
-            event_occurred.set()
+            event_occurred = True
 
         seconds = 10
         await event.respond("sleep " + str(seconds) + " seconds")
         # Attendi 30 secondi prima di eseguire nuovamente la richiesta
-        time.sleep(seconds)
+        await asyncio.sleep(seconds)
     
     await event.respond("Thread dead")
 # ---------------------------------------- FUNZIONI VARIE
