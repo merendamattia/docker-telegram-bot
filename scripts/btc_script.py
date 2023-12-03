@@ -2,6 +2,8 @@ import requests
 import threading
 import time
 
+from telethon import events
+
 # Comando per ottenere le fee di BTC
 def btc_fees():
     data = get_data("https://mempool.space/api/v1/fees/recommended")
@@ -16,7 +18,7 @@ def btc_fees():
 
 async def tracking_function_btcfees(value, event):
     # Variabile di controllo per indicare se l'evento si è verificato
-    event_occurred = False
+    event_occurred = threading.Event()
 
     # Crea un thread che eseguirà la funzione di ascolto
     thread = threading.Thread(target=tracking_thread_btcfees, args=(value, event_occurred, event))
@@ -28,9 +30,9 @@ async def tracking_function_btcfees(value, event):
 
 async def tracking_thread_btcfees(value, event_occurred, event):
     c = 0
-    while not event_occurred:
-        await event.respond("GET Request n=" + c)
-        c = c + 1
+    while not event_occurred.is_set():
+        await event.respond("GET Request n=" + str(c))
+        c += 1
 
         # Esegui la tua azione di tracking, ad esempio, effettua una richiesta GET
         data = get_data("https://mempool.space/api/v1/fees/recommended")
@@ -42,17 +44,16 @@ async def tracking_thread_btcfees(value, event_occurred, event):
         
         # Verifica l'evento o la risposta
         if value <= minimum:
-            await event.respond("TARGET RAGGIUNTO!!! " + value)
+            await event.respond("TARGET RAGGIUNTO!!! " + str(value))
             # Imposta la variabile di controllo per far terminare il thread
-            event_occurred = True
+            event_occurred.set()
 
         seconds = 10
-        await event.respond("sleep " + seconds + " seconds")
+        await event.respond("sleep " + str(seconds) + " seconds")
         # Attendi 30 secondi prima di eseguire nuovamente la richiesta
         time.sleep(seconds)
     
     await event.respond("Thread dead")
-
 # ---------------------------------------- FUNZIONI VARIE
 # Effettua una richiesta GET a un URL e ottiene i dati JSON
 def get_data(url):
