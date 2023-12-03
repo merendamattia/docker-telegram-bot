@@ -8,7 +8,7 @@ from scripts import btc_script
 import configparser # Library for reading from a configuration file, # pip install configparser
 import datetime # Library that we will need to get the day and time, # pip install datetime
 
-# import asyncio
+import asyncio
 
 #### Access credentials
 config = configparser.ConfigParser() # Define the method to read the configuration file
@@ -90,7 +90,9 @@ async def time(event):
         response_text = f"You entered a number: {user_message}"
         await event.respond(response_text)
         
-        btc_script.tracking_function_btcfees(user_message, event)
+        # btc_script.tracking_function_btcfees(user_message, event)
+        loop = asyncio.get_event_loop()
+        loop.create_task(btc_script.tracking_function_btcfees(user_message, event))
 
         response_text = f"Tracking started"
         await event.respond(response_text)
